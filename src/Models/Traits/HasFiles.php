@@ -8,9 +8,13 @@ use Dthrcrpz\FileLibrary\Models\FileAttachment;
 trait HasFiles
 {
     public function files () {
-        return $this->morphToMany(File::class, 'file_attachments')
+        $fileAttachments = $this->hasMany(FileAttachment::class, 'model_id', 'id')
         ->where('model_name', $this->modelName) # singular noun, kebab-case
-        ->orderBy('sequence');
+        ->with([
+            'data'
+        ]);
+
+        return $fileAttachments;
     }
 
     public function attachFile ($file_id) {

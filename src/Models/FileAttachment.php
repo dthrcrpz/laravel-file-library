@@ -3,16 +3,19 @@
 namespace Dthrcrpz\FileLibrary\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class FileAttachment extends Model
+class FileAttachment extends Pivot
 {
     use SoftDeletes;
 
-    protected $guarded = ['created_at'];
-    protected $hidden = ['created_at', 'updated_at'];
+    protected $table = 'file_attachments';
 
-    public function file () {
-        return $this->belongsTo(File::class);
+    protected $guarded = ['created_at'];
+    protected $hidden = ['id', 'file_id', 'model_id', 'model_name', 'created_at', 'updated_at', 'deleted_at'];
+
+    public function data () {
+        return $this->belongsTo(File::class, 'file_id', 'id');
     }
 }
