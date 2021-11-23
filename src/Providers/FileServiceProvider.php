@@ -10,6 +10,7 @@ class FileServiceProvider extends ServiceProvider
     {
         $this->loadRoutesFrom(__DIR__.'/../routes/files.php');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations/2021_11_23_00000_create_files_table.php');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations/2021_11_23_00001_create_file_attachments_table.php');
         $this->mergeConfigFrom(__DIR__.'/../config/filelibrary.php', 'filelibrary');
     }
 }

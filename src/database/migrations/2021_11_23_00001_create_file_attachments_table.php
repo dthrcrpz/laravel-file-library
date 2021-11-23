@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFilesTable extends Migration
+class CreateFileAttachmentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,11 @@ class CreateFilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('file_attachments', function (Blueprint $table) {
             $table->id();
 
-            $table->string('path');
-            $table->string('path_resized')->nullable();
-            
-            $table->string('title')->nullable();
-            $table->text('description')->nullable();
-            
-            $table->string('file_name')->nullable();
-            $table->string('file_size')->nullable();
+            $table->foreignId('file_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->string('model_name');
 
             $table->timestamps();
             $table->softDeletes();

@@ -15,6 +15,8 @@ class FileController extends Controller
     public function store (Request $r) {
         $validator = Validator::make($r->all(), [
             'file' => 'required',
+            'title' => 'sometimes',
+            'description' => 'sometimes',
         ]);
 
         if ($validator->fails()) {
@@ -30,9 +32,14 @@ class FileController extends Controller
             'path_resized' => $uploadedFile->path_resized,
             'file_name' => $uploadedFile->original_file_name,
             'file_size' => $uploadedFile->file_size,
+
+            'title' => $r->title,
+            'description' => $r->description
         ]);
 
-        return $file;
+        return response([
+            'file' => $file
+        ]);
     }
 
     private function uploadFile ($file, $oldFilePath = null, $oldFilePathResized = null) {
@@ -61,7 +68,7 @@ class FileController extends Controller
         $otherAcceptedExtensions = $this->getExtensions();
         $uploadPath = "uploads/$folderDate/$folderTime/$filenameToStore";
     
-        # if the file is svg or gif, directly upload it and stop the function immediately by returning the path names
+        # if the file type is not image, skip the compression; directly upload it; and stop the function immediately by returning the path names
         if (in_array($extension, $otherAcceptedExtensions)) {
             Storage::disk($disk)->put($uploadPath, file_get_contents($file), [
                 'visibility' => 'public',
