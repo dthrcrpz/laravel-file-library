@@ -42,6 +42,16 @@ class FileController extends Controller
     }
 
     public function update ($fileModel, Request $r) {
+        $file = File::find($fileModel);
+
+        if (!$file) {
+            return response([
+                'errors' => [
+                    'File not found'
+                ]
+            ], 404);
+        }
+
         $validator = Validator::make($r->all(), [
             'file' => 'sometimes',
             'title' => 'sometimes',
@@ -53,8 +63,6 @@ class FileController extends Controller
                 'errors' => $validator->errors()->all()
             ], 400);
         }
-
-        $file = File::find($fileModel);
 
         $uploadedFile = null;
 
