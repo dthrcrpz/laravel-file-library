@@ -13,7 +13,7 @@ use Intervention\Image\Facades\Image;
 class FileController extends Controller
 {
     public function store (Request $r) {
-        return 'test';
+        return config('filelibrary.storage');
         $validator = Validator::make($r->all(), [
             'file' => 'required',
             'file_title' => 'sometimes',
@@ -61,7 +61,7 @@ class FileController extends Controller
     }
 
     protected function uploadFile ($file, $oldFilePath = null, $oldFilePathResized = null) {
-        $disk = 'public'; # s3 kapag s3. public kapag sa local lang isesave
+        $disk = config('filelibrary.storage');
     
         # get the file size
         $size = filesize($file);
