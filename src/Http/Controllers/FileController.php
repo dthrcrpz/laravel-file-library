@@ -13,13 +13,8 @@ use Intervention\Image\Facades\Image;
 class FileController extends Controller
 {
     public function store (Request $r) {
-        return config('filelibrary.storage');
         $validator = Validator::make($r->all(), [
             'file' => 'required',
-            'file_title' => 'sometimes',
-            'file_alt' => 'sometimes',
-            'file_category' => 'sometimes',
-            'type' => 'required|in:image'
         ]);
 
         if ($validator->fails()) {
@@ -30,37 +25,17 @@ class FileController extends Controller
 
         $uploadedFile = $this->uploadFile($r->file);
 
-        $toReturn = [
+        $file = File::create([
             'path' => $uploadedFile->path,
             'path_resized' => $uploadedFile->path_resized,
-            'original_file_name' => $uploadedFile->original_file_name,
+            'file_name' => $uploadedFile->original_file_name,
             'file_size' => $uploadedFile->file_size,
-        ];
+        ]);
 
-        if ($r->type == 'image') {
-            $image = File::create([
-                'path' => $uploadedFile->path,
-                'path_resized' => $uploadedFile->path_resized,
-                'file_name' => $uploadedFile->original_file_name,
-                'file_size' => $uploadedFile->file_size,
-            ]);
-
-            $toReturn['image'] = $image;
-        }
-
-        /* add more conditions here if you want to save the file data to other models
-        * EXAMPLE:
-        * if ($r->type == 'user-document') {
-        *     $userDocument = UserDocument::create([
-        *         'path' => $uploadedFile->path
-        *     ]);
-        * }
-        */
-
-        return $toReturn;
+        return $file;
     }
 
-    protected function uploadFile ($file, $oldFilePath = null, $oldFilePathResized = null) {
+    private function uploadFile ($file, $oldFilePath = null, $oldFilePathResized = null) {
         $disk = config('filelibrary.storage');
     
         # get the file size
@@ -83,14 +58,14 @@ class FileController extends Controller
         $folderDate = Carbon::now()->format('Y-m-d');
         $folderTime = Carbon::now()->format('H-i-s-u');
         $filenameToStore = $filename . '.' . $extension;
-        $otherAcceptedExtensions = ['svg', 'gif', 'pdf', 'ppt', 'pptx', 'xls', 'xlsx', 'docx', 'doc', 'txt', 'SVG', 'GIF', 'PDF', 'PPT', 'PPTX', 'XLS', 'XLSX', 'DOCX', 'DOC', 'TXT'];
+        $otherAcceptedExtensions = $this->getExtensions();
         $uploadPath = "uploads/$folderDate/$folderTime/$filenameToStore";
     
         # if the file is svg or gif, directly upload it and stop the function immediately by returning the path names
         if (in_array($extension, $otherAcceptedExtensions)) {
             Storage::disk($disk)->put($uploadPath, file_get_contents($file), [
                 'visibility' => 'public',
-                'ContentType' => getContentType($extension)
+                'ContentType' => $this->getContentType($extension)
             ]);
     
             $toReturn = (object) [
@@ -126,5 +101,66 @@ class FileController extends Controller
         ];
     
         return $toReturn;
+    }
+
+    private function getExtensions () {
+        $extensions = ['svg', 'gif', 'pdf', 'ppt', 'pptx', 'xls', 'xlsx', 'docx', 'doc', 'txt'];
+
+        $extensionsArray = [];
+
+        foreach ($extensions as $key => $extension) {
+            array_push($extensionsArray, $extension);
+            array_push($extensionsArray, strtoupper($extension));
+        }
+
+        return $extensionsArray;
+    }
+    
+    private function getContentType ($extension) {
+        $result = null;
+        switch ($extension) {
+            case 'svg':
+            case 'SVG':
+                $result = 'image/svg+xml';
+                break;
+            case 'gif':
+            case 'GIF':
+                $result = 'image/gif';
+                break;
+            case 'pdf':
+            case 'PDF':
+                $result = 'application/pdf';
+                break;
+            case 'ppt':
+            case 'PPT':
+                $result = 'application/vnd.ms-powerpoint';
+                break;
+            case 'pptx':
+            case 'PPTX':
+                $result = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+                break;
+            case 'xls':
+            case 'XLS':
+                $result = 'application/vnd.ms-excel';
+                break;
+            case 'xlsx':
+            case 'XLSX':
+                $result = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+                break;
+            case 'docx':
+            case 'DOCX':
+                $result = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                break;
+            case 'doc':
+            case 'DOC':
+                $result = 'application/msword';
+                break;
+            case 'txt':
+            case 'TXT':
+                $result = 'text/plain';
+                break;
+        }
+    
+        return $result;
     }
 }
