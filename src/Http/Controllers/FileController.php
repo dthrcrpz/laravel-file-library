@@ -39,4 +39,13 @@ class FileController extends Controller
             'file' => $file
         ]);
     }
+
+    public function destroy ($file) {
+        $file = File::find($file);
+        $file->delete();
+
+        return response([
+            'message' => 'File deleted'
+        ]);
+    }
 }
