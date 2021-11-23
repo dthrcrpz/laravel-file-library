@@ -4,13 +4,16 @@ namespace Dthrcrpz\FileLibrary\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Dthrcrpz\FileLibrary\Models\Traits\CascadeRelationships;
 
 class File extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, CascadeRelationships;
 
     protected $guarded = ['created_at'];
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
+
+    protected static $cascades = ['file_attachments'];
 
     public function getFilenameAttribute () {
         return $this->attributes['path'];
@@ -33,5 +36,9 @@ class File extends Model
                 return config('filelibrary.s3_url') . urlencode($value);
                 break;
         }
+    }
+
+    public function file_attachments () {
+        return $this->hasMany(FileAttachment::class);
     }
 }
