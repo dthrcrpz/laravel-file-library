@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use Dthrcrpz\FileLibrary\Models\File;
 use Illuminate\Support\Facades\Validator;
 use Dthrcrpz\FileLibrary\Services\FilesHelper;
-use Illuminate\Support\Facades\Redis;
 
 class FileController extends Controller
 {
