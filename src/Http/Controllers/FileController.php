@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Dthrcrpz\FileLibrary\Models\File;
 use Illuminate\Support\Facades\Validator;
 use Dthrcrpz\FileLibrary\Services\FilesHelper;
+use Illuminate\Support\Facades\Redis;
 
 class FileController extends Controller
 {
@@ -40,13 +41,39 @@ class FileController extends Controller
         ]);
     }
 
-    public function update ($file) {
-        $file = File::find($file);
+    public function update ($fileModel, Request $r) {
+        $validator = Validator::make($r->all(), [
+            'file' => 'sometimes',
+            'title' => 'sometimes',
+            'description' => 'sometimes',
+        ]);
 
-        return $file;
+        if ($validator->fails()) {
+            return response([
+                'errors' => $validator->errors()->all()
+            ], 400);
+        }
+
+        $file = File::find($fileModel);
+
+        $uploadedFile = null;
+
+        if ($r->file) {
+            $uploadedFile = (new FilesHelper)->uploadFile($r->file);
+        }
+
+        $file->update([
+            'path' => ($uploadedFile != null) ? $uploadedFile->path : $file->getRawOriginal('path'),
+            'path_resized' => ($uploadedFile != null) ? $uploadedFile->path_resized : $file->getRawOriginal('path_resized'),
+            'file_name' => ($uploadedFile != null) ? $uploadedFile->original_file_name : $file->file_name,
+            'file_size' => ($uploadedFile != null) ? $uploadedFile->file_size : $file->file_size,
+
+            'title' => ($r->title) ? $r->title : $file->title,
+            'description' => ($r->description) ? $r->description : $file->description
+        ]);
 
         return response([
-            'message' => 'File deleted'
+            'file' => $file
         ]);
     }
 
