@@ -7,11 +7,11 @@ use Dthrcrpz\FileLibrary\Models\FileAttachment;
 
 trait HasFiles
 {
-    public function files () {
+    public function file_attachments () {
         $fileAttachments = $this->hasMany(FileAttachment::class, 'model_id', 'id')
         ->where('model_name', $this->modelName) # singular noun, kebab-case
         ->with([
-            'data'
+            'files'
         ]);
 
         return $fileAttachments;
