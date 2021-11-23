@@ -1,26 +1,35 @@
 <?php
 
-namespace Dthrcrpz\FileLibrary\Models;
+namespace Dthrcrpz\FileLibrary\Models\Traits;
 
 use Dthrcrpz\FileLibrary\Models\File;
+use Dthrcrpz\FileLibrary\Models\FileAttachment;
 
 trait HasFiles
 {
-    // public function files () {
-    //     return $this->hasMany(File::class, 'parent_id', 'id')
-    //     ->where('model_name', $this->modelName) # singular noun, kebab-case
-    //     ->orderBy('sequence');
-    // }
+    public function files () {
+        return $this->morphToMany(File::class, 'file_attachments')
+        ->where('model_name', $this->modelName) # singular noun, kebab-case
+        ->orderBy('sequence');
+    }
 
-    public function attachFile ($image_id) {
-        $image = File::find($image_id);
+    public function attachFile ($file_id) {
+        if ($this->modelName) {
+            $attachmentExists = FileAttachment::where('model_name', $this->modelName)
+            ->where('model_id', $this->id)
+            ->where('file_id', $file_id)
+            ->exists();
 
-        if ($image) {
-            if ($image->parent_id != $this->id) {
-                $image->update([
-                    'parent_id' => $this->id,
-                    'type' => $this->modelName
-                ]);
+            if (!$attachmentExists) {
+                $file = File::find($file_id);
+        
+                if ($file) {
+                    FileAttachment::create([
+                        'model_id' => $this->id,
+                        'model_name' => $this->modelName,
+                        'file_id' => $file_id
+                    ]);
+                }
             }
         }
     }

@@ -17,6 +17,7 @@ class CreateFileAttachmentsTable extends Migration
             $table->id();
 
             $table->foreignId('file_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('model_id');
             $table->string('model_name');
 
             $table->timestamps();
@@ -31,6 +32,6 @@ class CreateFileAttachmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('files');
+        Schema::dropIfExists('file_attachments');
     }
 }

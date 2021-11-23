@@ -78,7 +78,7 @@ class FileController extends Controller
             $toReturn = (object) [
                 'path' => $uploadPath,
                 'path_resized' => $uploadPath,
-                'original_file_name' => $filenameToStore,
+                'original_file_name' => $filenameWithExtension,
                 'file_size' => $fileSize
             ];
     
