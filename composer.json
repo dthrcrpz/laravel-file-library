@@ -10,8 +10,8 @@
     "require": {
         "php": "^7.4|^8.0",
         "illuminate/contracts": "^8.0",
-        "intervention/image": "^2.7",
-        "laravel/helpers": "^1.4"
+        "intervention/image": "^2.0",
+        "laravel/helpers": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -26,6 +26,9 @@
             "providers": [
                 "Dthrcrpz\\FileLibrary\\Providers\\FileServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-master": "1.0"
         }
     }
 }
