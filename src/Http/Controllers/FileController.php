@@ -5,8 +5,8 @@ namespace Dthrcrpz\FileLibrary\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Dthrcrpz\FileLibrary\Models\File;
-use Dthrcrpz\FileLibrary\Services\FilesHelper;
 use Illuminate\Support\Facades\Validator;
+use Dthrcrpz\FileLibrary\Services\FilesHelper;
 
 class FileController extends Controller
 {
@@ -40,8 +40,27 @@ class FileController extends Controller
         ]);
     }
 
+    public function update ($file) {
+        $file = File::find($file);
+
+        return $file;
+
+        return response([
+            'message' => 'File deleted'
+        ]);
+    }
+
     public function destroy ($file) {
         $file = File::find($file);
+
+        if (!$file) {
+            return response([
+                'errors' => [
+                    'File not found'
+                ]
+            ], 404);
+        }
+
         $file->delete();
 
         return response([
