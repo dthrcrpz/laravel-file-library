@@ -13,6 +13,7 @@ use Intervention\Image\Facades\Image;
 class FileController extends Controller
 {
     public function store (Request $r) {
+        return 'test';
         $validator = Validator::make($r->all(), [
             'file' => 'required',
             'file_title' => 'sometimes',
