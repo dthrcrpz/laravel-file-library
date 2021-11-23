@@ -28,6 +28,7 @@ The routes are automatically generated after installing the package. To check if
 | file | file | <your uploaded fle> | yes |
 | title | string | <any> | no |
 | description | string | <any> | no |
+
 **SAMPLE RESPONSE:**
 ```json
 {
@@ -52,6 +53,7 @@ The routes are automatically generated after installing the package. To check if
 | file | file | <your uploaded fle> | no |
 | title | string | <any> | no |
 | description | string | <any> | no |
+
 **SAMPLE RESPONSE:**
 ```json
 {
