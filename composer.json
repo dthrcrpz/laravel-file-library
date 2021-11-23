@@ -9,7 +9,8 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "illuminate/contracts": "^8.0"
+        "illuminate/contracts": "^8.0",
+        "intervention/image": "^2.7"
     },
     "autoload": {
         "psr-4": {
