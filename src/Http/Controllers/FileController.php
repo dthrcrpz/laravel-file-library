@@ -4,83 +4,36 @@ namespace Dthrcrpz\FileLibrary\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Dthrcrpz\FileLibrary\FileLib\Facades\FileLib;
 use Dthrcrpz\FileLibrary\Models\File;
-use Illuminate\Support\Facades\Validator;
-use Dthrcrpz\FileLibrary\Services\FilesHelper;
 
 class FileController extends Controller
 {
     public function store (Request $r) {
-        $validator = Validator::make($r->all(), [
-            'file' => 'required',
-            'title' => 'sometimes',
-            'description' => 'sometimes',
-        ]);
+        $uploadedFile = FileLib::uploadFile($r);
 
-        if ($validator->fails()) {
+        if (!$uploadedFile->success) {
             return response([
-                'errors' => $validator->errors()->all()
-            ], 400);
+                'errors' => $uploadedFile->errorMessage
+            ], $uploadedFile->statusCode);
         }
 
-        $uploadedFile = (new FilesHelper)->uploadFile($r->file);
-
-        $file = File::create([
-            'path' => $uploadedFile->path,
-            'path_resized' => $uploadedFile->path_resized,
-            'file_name' => $uploadedFile->original_file_name,
-            'file_size' => $uploadedFile->file_size,
-
-            'title' => $r->title,
-            'description' => $r->description
-        ]);
-
         return response([
-            'file' => $file
+            'file' => $uploadedFile->file
         ]);
     }
 
-    public function update ($fileModel, Request $r) {
-        $file = File::find($fileModel);
+    public function update ($file_model, Request $r) {
+        $updatedFile = FileLib::updateFile($file_model, $r);
 
-        if (!$file) {
+        if (!$updatedFile->success) {
             return response([
-                'errors' => [
-                    'File not found'
-                ]
-            ], 404);
+                'errors' => $updatedFile->errorMessage
+            ], $updatedFile->statusCode);
         }
-
-        $validator = Validator::make($r->all(), [
-            'file' => 'sometimes',
-            'title' => 'sometimes',
-            'description' => 'sometimes',
-        ]);
-
-        if ($validator->fails()) {
-            return response([
-                'errors' => $validator->errors()->all()
-            ], 400);
-        }
-
-        $uploadedFile = null;
-
-        if ($r->file) {
-            $uploadedFile = (new FilesHelper)->uploadFile($r->file);
-        }
-
-        $file->update([
-            'path' => ($uploadedFile != null) ? $uploadedFile->path : $file->getRawOriginal('path'),
-            'path_resized' => ($uploadedFile != null) ? $uploadedFile->path_resized : $file->getRawOriginal('path_resized'),
-            'file_name' => ($uploadedFile != null) ? $uploadedFile->original_file_name : $file->file_name,
-            'file_size' => ($uploadedFile != null) ? $uploadedFile->file_size : $file->file_size,
-
-            'title' => ($r->title) ? $r->title : $file->title,
-            'description' => ($r->description) ? $r->description : $file->description
-        ]);
 
         return response([
-            'file' => $file
+            'file' => $updatedFile->file
         ]);
     }
 

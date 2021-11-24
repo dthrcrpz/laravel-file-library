@@ -6,7 +6,7 @@ use Dthrcrpz\FileLibrary\Http\Controllers\FileAttachmentController;
 
 Route::group(['prefix' => 'api'], function () {
     Route::post('files', [FileController::class, 'store']);
-    Route::patch('files/{fileModel}', [FileController::class, 'update']);
+    Route::patch('files/{file_model}', [FileController::class, 'update']);
     Route::delete('files/{file}', [FileController::class, 'destroy']);
     Route::delete('file-attachments/{file_attachment}', [FileAttachmentController::class, 'destroy']);
 });
