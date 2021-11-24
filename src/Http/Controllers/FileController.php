@@ -28,7 +28,7 @@ class FileController extends Controller
 
         if (!$updatedFile->success) {
             return response([
-                'errors' => $updatedFile->errorMessage
+                'errors' => [$updatedFile->errorMessage]
             ], $updatedFile->statusCode);
         }
 
@@ -38,20 +38,16 @@ class FileController extends Controller
     }
 
     public function destroy ($file) {
-        $file = File::find($file);
+        $fileDelete = FileLib::deleteFile($file);
 
-        if (!$file) {
+        if (!$fileDelete->success) {
             return response([
-                'errors' => [
-                    'File not found'
-                ]
-            ], 404);
+                'errors' => [$fileDelete->errorMessage]
+            ], $fileDelete->statusCode);
         }
 
-        $file->delete();
-
         return response([
-            'message' => 'File deleted'
+            'message' => $fileDelete->message
         ]);
     }
 }

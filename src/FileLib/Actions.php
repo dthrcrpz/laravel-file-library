@@ -38,7 +38,8 @@ class Actions
         return (object) [
             'success' => true,
             'statusCode' => 201,
-            'file' => $file
+            'file' => $file,
+            'message' => 'File added'
         ];
     }
 
@@ -86,6 +87,28 @@ class Actions
         return (object) [
             'success' => true,
             'statusCode' => 200,
+            'file' => $file,
+            'message' => 'File updated'
+        ];
+    }
+    
+    public function deleteFile ($file) {
+        $file = File::find($file);
+
+        if (!$file) {
+            return (object) [
+                'success' => false,
+                'statusCode' => 404,
+                'errorMessage' => 'File not found'
+            ];
+        }
+
+        $file->delete();
+
+        return (object) [
+            'success' => true,
+            'statusCode' => 201,
+            'message' => 'File deleted',
             'file' => $file
         ];
     }
