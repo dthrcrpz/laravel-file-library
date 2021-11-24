@@ -39,7 +39,7 @@ Navigate to `config/app.php` and add the following to the `providers` and `alias
 ```
 
 ## Usage Through Facades
-#### Upload File
+### Upload File
 ```php
 FileLib::uploadFile($request);
 ```
@@ -60,7 +60,7 @@ FileLib::uploadFile($request);
     ]);
 ```
 
-#### Update File
+### Update File
 ```php
 FileLib::updateFile($file, $request);
 ```
@@ -82,7 +82,7 @@ FileLib::updateFile($file, $request);
     ]);
 ```
 
-#### Delete File
+### Delete File
 ```php
 FileLib::deleteFile($file);
 ```
@@ -163,7 +163,7 @@ Answer: When a user uploads a file, the frontend should call this API to upload 
 }
 ```
 
-#### Delete File (route)
+### Delete File (route)
 This will also delete the `file_attachments` related to it
 
 **METHOD:** `DELETE`
