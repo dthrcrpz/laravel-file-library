@@ -4,7 +4,6 @@ namespace Dthrcrpz\FileLibrary\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Dthrcrpz\FileLibrary\Models\Traits\CascadeRelationships;
 
 class File extends Model
 {
@@ -40,5 +39,13 @@ class File extends Model
 
     public function file_attachments () {
         return $this->hasMany(FileAttachment::class);
+    }
+
+    public function delete () {
+        foreach ($this->file_attachments as $key => $file_attachment) {
+            $file_attachment->delete();
+        }
+
+        $this->delete();
     }
 }
