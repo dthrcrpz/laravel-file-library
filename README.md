@@ -5,6 +5,7 @@
 
 ## Requirements
 php >= 7.4
+
 laravel >= 8
 
 ## Installation
