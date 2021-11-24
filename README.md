@@ -28,7 +28,6 @@ The routes are automatically generated after installing the package. To check if
 | file | file | <your uploaded fle> | yes |
 | title | string | <any> | no |
 | description | string | <any> | no |
-
 **SAMPLE RESPONSE:**
 ```json
 {
@@ -44,6 +43,9 @@ The routes are automatically generated after installing the package. To check if
 }
 ```
 
+Question: Why does the API only accepts 1 file?
+Answer: When a user uploads a file, the frontend should call this API to upload the file. Next, it should save the API response then get the file's `id` then attach it to the form that will be submitted later on. During submission, the backend should [attach the file to the model](#attaching-files-to-model).
+
 ### Update File
 **METHOD:** PATCH/PUT
 **ROUTE:** `/api/files/69`
@@ -53,7 +55,6 @@ The routes are automatically generated after installing the package. To check if
 | file | file | <your uploaded fle> | no |
 | title | string | <any> | no |
 | description | string | <any> | no |
-
 **SAMPLE RESPONSE:**
 ```json
 {
