@@ -78,7 +78,6 @@ FileLib::updateFile($file, $request);
 ```php
 FileLib::deleteFile($file);
 ```
-**Make sure that your request body contains the parameters defined [HERE](#delete-file-route)**
 
 ***Sample Code:***
 ```php
