@@ -8,7 +8,7 @@ use Dthrcrpz\FileLibrary\Models\Traits\CascadeRelationships;
 
 class File extends Model
 {
-    use SoftDeletes, CascadeRelationships;
+    use SoftDeletes;
 
     protected $guarded = ['created_at'];
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];

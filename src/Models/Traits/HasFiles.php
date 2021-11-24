@@ -4,6 +4,7 @@ namespace Dthrcrpz\FileLibrary\Models\Traits;
 
 use Dthrcrpz\FileLibrary\Models\File;
 use Dthrcrpz\FileLibrary\Models\FileAttachment;
+use Exception;
 
 trait HasFiles
 {
@@ -15,6 +16,17 @@ trait HasFiles
         ]);
 
         return $fileAttachments;
+    }
+
+    public function attachFiles ($file_ids) {
+        $acceptedDataTypes = ['array', 'object'];
+        if (in_array(gettype($file_ids), $acceptedDataTypes)) {
+            foreach ($file_ids as $key => $file_id) {
+                $this->attachFile($file_id);
+            }
+        } else {
+            throw new Exception("attachFiles method can only accept array");
+        }
     }
 
     public function attachFile ($file_id) {
