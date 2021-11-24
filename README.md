@@ -4,9 +4,8 @@
 > This package was developed mainly for personal usage but I decided to publish it so I can just install it through composer for my projects.
 
 ## Requirements
-php >= 7.4
-
-laravel >= 8
+`php >= 7.4`
+`laravel >= 8`
 
 ## Installation
 Install the package
