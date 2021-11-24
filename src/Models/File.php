@@ -42,9 +42,7 @@ class File extends Model
     }
 
     public function delete () {
-        foreach ($this->file_attachments as $key => $file_attachment) {
-            $file_attachment->delete();
-        }
+        $this->file_attachments()->delete();
 
         $this->delete();
     }
