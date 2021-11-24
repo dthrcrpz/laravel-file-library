@@ -12,6 +12,7 @@ class Actions
     public function uploadFile ($r) {
         $validator = Validator::make($r->all(), [
             'file' => 'required',
+            'type' => 'required',
             'title' => 'sometimes',
             'description' => 'sometimes',
         ]);
@@ -32,6 +33,8 @@ class Actions
             'file_name' => $uploadedFile->original_file_name,
             'file_size' => $uploadedFile->file_size,
 
+            'type' => $r->type,
+            
             'title' => $r->title,
             'description' => $r->description
         ]);
@@ -56,6 +59,7 @@ class Actions
         }
 
         $validator = Validator::make($r->all(), [
+            'type' => 'sometimes',
             'file' => 'sometimes',
             'title' => 'sometimes',
             'description' => 'sometimes',
@@ -80,6 +84,8 @@ class Actions
             'path_resized' => ($uploadedFile != null) ? $uploadedFile->path_resized : $file->getRawOriginal('path_resized'),
             'file_name' => ($uploadedFile != null) ? $uploadedFile->original_file_name : $file->file_name,
             'file_size' => ($uploadedFile != null) ? $uploadedFile->file_size : $file->file_size,
+
+            'type' => ($r->type) ? $r->type : $file->type,
 
             'title' => ($r->title) ? $r->title : $file->title,
             'description' => ($r->description) ? $r->description : $file->description

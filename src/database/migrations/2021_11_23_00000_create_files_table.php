@@ -19,6 +19,8 @@ class CreateFilesTable extends Migration
             $table->string('path');
             $table->string('path_resized')->nullable();
             
+            $table->string('type')->nullable();
+
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             
