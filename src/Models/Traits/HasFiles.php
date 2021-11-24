@@ -37,4 +37,16 @@ trait HasFiles
             }
         }
     }
+
+    public function detachAllFiles () {
+        if ($this->modelName) {
+        $fileAttachments = FileAttachment::where('model_name', $this->modelName)
+            ->where('model_id', $this->id)
+            ->get();
+
+            foreach ($fileAttachments as $key => $fileAttachment) {
+                $fileAttachment->forceDelete();
+            }
+        }
+    }
 }
