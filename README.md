@@ -115,6 +115,7 @@ To check the routes, run `php artisan route:list`
 | Key | Type | Accepted Values | Required |
 | ------ | ------ | ------ | ------ |
 | file | file | <your uploaded fle> | yes |
+| type | string | `image`, `document`, `etc.` | yes |
 | title | string | <any> | no |
 | description | string | <any> | no |
 
@@ -145,6 +146,7 @@ Answer: When a user uploads a file, the frontend should call this API to upload 
 | Key | Type | Accepted Values | Required |
 | ------ | ------ | ------ | ------ |
 | file | file | <your uploaded fle> | no |
+| type | string | `image`, `document`, `etc.` | no |
 | title | string | <any> | no |
 | description | string | <any> | no |
 
