@@ -107,7 +107,7 @@ FileLib::deleteFile($file);
 If the `enabled_routes` is enabled on the `filelibrary.php` config file, the pacakge will generate routes to upload, update, and delete files.
 To check the routes, run `php artisan route:list`
 ### Upload File (route)
-**METHOD:** POST
+**METHOD:** `POST`
 
 **ROUTE:** `/api/files`
 
@@ -137,7 +137,7 @@ Question: Why does the API only accepts 1 file?
 Answer: When a user uploads a file, the frontend should call this API to upload the file. Next, it should save the API response then get the file's `id` then attach it to the form that will be submitted later on. During submission, the backend should [attach the file to the model](#attaching-files-to-model).
 
 ### Update File (route)
-**METHOD:** PATCH/PUT
+**METHOD:** `PATCH/PUT`
 
 **ROUTE:** `/api/files/69`
 
@@ -166,7 +166,7 @@ Answer: When a user uploads a file, the frontend should call this API to upload 
 #### Delete File (route)
 This will also delete the `file_attachments` related to it
 
-**METHOD:** DELETE
+**METHOD:** `DELETE`
 
 **ROUTE:** `/api/files/69`
 
@@ -251,7 +251,7 @@ You can use Eloquent's `with` method.
 **Sample use case:**
 You're editing a Blog with multiple attached files. You're displaying the files on that Editor Form and you want to delete one. Call this route when doing so.
 
-**METHOD:** DELETE
+**METHOD:** `DELETE`
 
 **ROUTE:** `/api/file-attachments/69`
 
