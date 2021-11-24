@@ -247,6 +247,7 @@ You can use Eloquent's `with` method.
 You're editing a Blog with multiple attached files. You're displaying the files on that Editor Form and you want to delete one. Call this route when doing so.
 
 **METHOD:** DELETE
+
 **ROUTE:** `/api/file-attachments/69`
 
 ## Config
