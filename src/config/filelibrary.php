@@ -5,6 +5,7 @@ return [
     |--------------------------------------------------------------------------
     | Storage
     |--------------------------------------------------------------------------
+    | The filesystem where you want the files to be uploaded
     | Supported: "public", "s3"
     */
     'storage' => 'public',
@@ -14,7 +15,7 @@ return [
     | AWS S3 URL
     |--------------------------------------------------------------------------
     | Required when storage is set to s3
-    | Example Format: https://your-domain.s3-ap-southeast-1.amazonaws.com/
+    | Format should be: https://your-domain.s3-ap-southeast-1.amazonaws.com/
     */
     's3_url' => env('S3_URL', null),
 

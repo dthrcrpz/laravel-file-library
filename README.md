@@ -39,6 +39,7 @@ Make sure to enable the `FileLib` facade to your Laravel app, navigate to `confi
 FileLib::uploadFile($request);
 ```
 **Make sure that your request body contains the parameters defined [HERE](#upload-file-route)**
+
 ***Sample Code:***
 ```php
     $uploadedFile = FileLib::uploadFile($request);
@@ -59,6 +60,7 @@ FileLib::uploadFile($request);
 FileLib::updateFile($file, $request);
 ```
 **Make sure that your request body contains the parameters defined [HERE](#update-file-route)**
+
 ***Sample Code:***
 ```php
     $file = File::find(420);
@@ -99,9 +101,11 @@ FileLib::deleteFile($file);
 ### Usage Through Routes
 If the `enabled_routes` is enabled on the `filelibrary.php` config file, the pacakge will generate routes to upload, update, and delete files.
 To check the routes, run `php artisan route:list`
-#### Upload File (route)
+### Upload File (route)
 **METHOD:** POST
+
 **ROUTE:** `/api/files`
+
 **BODY:**
 | Key | Type | Accepted Values | Required |
 | ------ | ------ | ------ | ------ |
@@ -127,9 +131,11 @@ To check the routes, run `php artisan route:list`
 Question: Why does the API only accepts 1 file?
 Answer: When a user uploads a file, the frontend should call this API to upload the file. Next, it should save the API response then get the file's `id` then attach it to the form that will be submitted later on. During submission, the backend should [attach the file to the model](#attaching-files-to-model).
 
-#### Update File (route)
+### Update File (route)
 **METHOD:** PATCH/PUT
+
 **ROUTE:** `/api/files/69`
+
 **BODY:**
 | Key | Type | Accepted Values | Required |
 | ------ | ------ | ------ | ------ |
@@ -154,8 +160,11 @@ Answer: When a user uploads a file, the frontend should call this API to upload 
 
 #### Delete File (route)
 This will also delete the `file_attachments` related to it
+
 **METHOD:** DELETE
+
 **ROUTE:** `/api/files/69`
+
 **SAMPLE RESPONSE:**
 ```json
 {
@@ -241,10 +250,44 @@ You're editing a Blog with multiple attached files. You're displaying the files 
 **ROUTE:** `/api/file-attachments/69`
 
 ## Config
-| Key | Description | Values | Default |
-| ------ | ------ | ------ | ------ |
-| storage | The filesystem where you want the files to be uploaded | `public`, `s3` | `public` |
-| s3_url | Required if `storage` is set to `s3`. Format should be `https://your-domain.s3-ap-southeast-1.amazonaws.com/`. DO NOT miss out the trailing slash at the end of the URL | `<url>` | `null` |
+Create a `filelibrary.php` file under your `config` folder and paste the following:
+```php
+<?php
+
+return [
+    /*
+    |--------------------------------------------------------------------------
+    | Storage
+    |--------------------------------------------------------------------------
+    | The filesystem where you want the files to be uploaded
+    | Supported: "public", "s3"
+    */
+    'storage' => 'public',
+    
+    /*
+    |--------------------------------------------------------------------------
+    | AWS S3 URL
+    |--------------------------------------------------------------------------
+    | Required when storage is set to s3
+    | Format should be: https://your-domain.s3-ap-southeast-1.amazonaws.com/
+    */
+    's3_url' => env('S3_URL', null),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Enable Routes
+    |--------------------------------------------------------------------------
+    | Set to false if you want to use custom routes with custom middlewares, etc.
+    |
+    | The default routes are:
+    | POST: 'files'
+    | PATCH: 'files/{file_model}'
+    | DELETE: 'files/{file}'
+    | DELETE: file-attachments/{file_attachment}
+    */
+    'enable_routes' => true
+];
+```
 
 ## Development
 Want to contribute? Great! Feel free to submit a pull request.
