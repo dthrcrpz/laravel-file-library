@@ -61,7 +61,8 @@ FileLib::updateFile($file, $request);
 **Make sure that your request body contains the parameters defined [HERE](#update-file-route)**
 ***Sample Code:***
 ```php
-    $updatedFile = FileLib::updateFile($file_model, $r);
+    $file = File::find(420);
+    $updatedFile = FileLib::updateFile(file, $r);
 
     if (!$updatedFile->success) {
         return response([
@@ -81,6 +82,7 @@ FileLib::deleteFile($file);
 
 ***Sample Code:***
 ```php
+    $file = File::find(420);
     $fileDelete = FileLib::deleteFile($file);
 
     if (!$fileDelete->success) {
