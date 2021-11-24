@@ -17,9 +17,88 @@ php artisan migrate
 After running the migration, `files` and `files_attachments` tables will be added to your database. Make sure that there's no conflict with your table names.
 
 ## Usage
-This package uses routes to upload, update, and delete files.
-The routes are automatically generated after installing the package. To check if the routes were added, run `php artisan route:list`
-### Upload File
+
+### Usage Through Facades
+Make sure to enable the `FileLib` facade to your Laravel app, navigate to `config/app.php` and add the following to the `providers` and `aliases` array:
+```php
+    ...
+    'providers' => [
+        ...
+        Dthrcrpz\FileLibrary\Providers\FileLibServiceProvider::class,
+        ...
+    ],
+    'aliases' => [
+        ...
+        'FileLib' => Dthrcrpz\FileLibrary\FileLib\Facades\FileLib::class,
+        ...
+    ]
+```
+
+#### Upload File
+```php
+FileLib::uploadFile($request);
+```
+**Make sure that your request body contains the parameters defined [HERE](#upload-file-route)**
+***Sample Code:***
+```php
+    $uploadedFile = FileLib::uploadFile($request);
+
+    if (!$uploadedFile->success) {
+        return response([
+            'errors' => $uploadedFile->errorMessage
+        ], $uploadedFile->statusCode);
+    }
+
+    return response([
+        'file' => $uploadedFile->file
+    ]);
+```
+
+#### Update File
+```php
+FileLib::updateFile($file, $request);
+```
+**Make sure that your request body contains the parameters defined [HERE](#update-file-route)**
+***Sample Code:***
+```php
+    $updatedFile = FileLib::updateFile($file_model, $r);
+
+    if (!$updatedFile->success) {
+        return response([
+            'errors' => [$updatedFile->errorMessage]
+        ], $updatedFile->statusCode);
+    }
+
+    return response([
+        'file' => $updatedFile->file
+    ]);
+```
+
+#### Delete File
+```php
+FileLib::deleteFile($file);
+```
+**Make sure that your request body contains the parameters defined [HERE](#delete-file-route)**
+
+***Sample Code:***
+```php
+    $fileDelete = FileLib::deleteFile($file);
+
+    if (!$fileDelete->success) {
+        return response([
+            'errors' => [$fileDelete->errorMessage]
+        ], $fileDelete->statusCode);
+    }
+
+    return response([
+        'message' => $fileDelete->message
+    ]);
+```
+
+### Usage Through Routes
+If the `enabled_routes` is enabled on the `filelibrary.php` config file, the pacakge will generate routes to upload, update, and delete files.
+To check the routes, run `php artisan route:list`
+#### Upload File (route)
 **METHOD:** POST
 **ROUTE:** `/api/files`
 **BODY:**
@@ -28,6 +107,7 @@ The routes are automatically generated after installing the package. To check if
 | file | file | <your uploaded fle> | yes |
 | title | string | <any> | no |
 | description | string | <any> | no |
+
 **SAMPLE RESPONSE:**
 ```json
 {
@@ -46,7 +126,7 @@ The routes are automatically generated after installing the package. To check if
 Question: Why does the API only accepts 1 file?
 Answer: When a user uploads a file, the frontend should call this API to upload the file. Next, it should save the API response then get the file's `id` then attach it to the form that will be submitted later on. During submission, the backend should [attach the file to the model](#attaching-files-to-model).
 
-### Update File
+#### Update File (route)
 **METHOD:** PATCH/PUT
 **ROUTE:** `/api/files/69`
 **BODY:**
@@ -55,6 +135,7 @@ Answer: When a user uploads a file, the frontend should call this API to upload 
 | file | file | <your uploaded fle> | no |
 | title | string | <any> | no |
 | description | string | <any> | no |
+
 **SAMPLE RESPONSE:**
 ```json
 {
@@ -70,7 +151,7 @@ Answer: When a user uploads a file, the frontend should call this API to upload 
 }
 ```
 
-### Delete File
+#### Delete File (route)
 This will also delete the `file_attachments` related to it
 **METHOD:** DELETE
 **ROUTE:** `/api/files/69`
@@ -81,7 +162,7 @@ This will also delete the `file_attachments` related to it
 }
 ```
 
-### Attaching files to Model
+## Attaching files to Model
 Make sure to use the `HasFiles` trait on your model and define its `$modelName` (kebab-case, singular noun)
 ```php
 <?php
@@ -100,12 +181,27 @@ class YourModel extends Model
 }
 ```
 
+### attachFile(), attachFiles()
 After setting it up, your model can now call the `attachFile()` method. It accepts `$file_id` (id) parameter which you can get from you `files` table.
+
+***Attaching a single file***
 ```php
     $yourModel = YourModel::find(69);
-    $yourModel->attachFile(420);
+
+    # attaching a single file
+    $yourModel->attachFile(69); # where 69 is the file ID
 ```
-### Calling the file attachments relationship
+
+***Attaching multiple files***
+```php
+    $yourModel = YourModel::find(69);
+
+    # assuming you got an array of file IDs
+    $fileIdArray = [420, 69, 666];
+    $yourModel->attachFiles($fileIdArray);
+```
+
+### Calling the file_attachments relationship
 You can use Eloquent's `with` method.
 ```php
     $yourModel = YourModel::where('id', 69)
@@ -115,7 +211,31 @@ You can use Eloquent's `with` method.
     ->first();
 ```
 
-### Deleting Attachment
+### detachFile()
+```php
+    $yourModel = YourModel::find(69);
+    
+    # assuming you got an array of file IDs
+    foreach ($r->file_ids as $file_id) {
+        $yourModel->detachFile($file_id);
+    }
+    
+    # detaching a single file
+    $yourModel->detachFile(69); # where 69 is the file ID
+```
+
+### detachAllFiles()
+```php
+    $yourModel = YourModel::find(69);
+    
+    # detaching all files
+    $yourModel->detachAllFiles();
+```
+
+### Deleting Attachment (Route)
+**Sample use case:**
+You're editing a Blog with multiple attached files. You're displaying the files on that Editor Form and you want to delete one. Call this route when doing so.
+
 **METHOD:** DELETE
 **ROUTE:** `/api/file-attachments/69`
 
