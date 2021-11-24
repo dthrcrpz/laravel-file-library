@@ -124,7 +124,7 @@ class Actions
             ];
         }
 
-        $fileAttachment->forceDelete();
+        $fileAttachment->delete();
 
         return (object) [
             'success' => true,

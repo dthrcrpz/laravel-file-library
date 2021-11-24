@@ -25,7 +25,7 @@ trait HasFiles
                 $this->attachFile($file_id);
             }
         } else {
-            throw new Exception("attachFiles method can only accept array");
+            throw new Exception("attachFiles function can only accept array");
         }
     }
 
@@ -50,6 +50,30 @@ trait HasFiles
         }
     }
 
+    public function detachFiles ($file_ids) {
+        $acceptedDataTypes = ['array', 'object'];
+        if (in_array(gettype($file_ids), $acceptedDataTypes)) {
+            foreach ($file_ids as $key => $file_id) {
+                $this->detachFile($file_id);
+            }
+        } else {
+            throw new Exception("detachFiles function can only accept array");
+        }
+    }
+
+    public function detachFile ($file_id) {
+        if ($this->modelName) {
+            $attachment = FileAttachment::where('model_name', $this->modelName)
+            ->where('model_id', $this->id)
+            ->where('file_id', $file_id)
+            ->first();
+
+            if ($attachment) {
+                $attachment->delete();
+            }
+        }
+    }
+
     public function detachAllFiles () {
         if ($this->modelName) {
         $fileAttachments = FileAttachment::where('model_name', $this->modelName)
@@ -57,7 +81,7 @@ trait HasFiles
             ->get();
 
             foreach ($fileAttachments as $key => $fileAttachment) {
-                $fileAttachment->forceDelete();
+                $fileAttachment->delete();
             }
         }
     }
