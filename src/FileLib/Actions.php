@@ -110,6 +110,10 @@ class Actions
             ];
         }
 
+        foreach ($file->file_attachments as $key => $file_attachment) {
+            $file_attachment->delete();
+        }
+
         $file->delete();
 
         return (object) [

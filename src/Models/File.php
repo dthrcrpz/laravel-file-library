@@ -40,10 +40,4 @@ class File extends Model
     public function file_attachments () {
         return $this->hasMany(FileAttachment::class);
     }
-
-    public function delete () {
-        $this->file_attachments()->delete();
-
-        $this->delete();
-    }
 }
