@@ -5,7 +5,6 @@ namespace Dthrcrpz\FileLibrary\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Dthrcrpz\FileLibrary\FileLib\Facades\FileLib;
-use Dthrcrpz\FileLibrary\Models\File;
 
 class FileController extends Controller
 {
