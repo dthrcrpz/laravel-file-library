@@ -5,6 +5,7 @@ namespace Dthrcrpz\FileLibrary\FileLib;
 use Dthrcrpz\FileLibrary\Models\File;
 use Illuminate\Support\Facades\Validator;
 use Dthrcrpz\FileLibrary\Services\FilesHelper;
+use Dthrcrpz\FileLibrary\Models\FileAttachment;
 
 class Actions
 {
@@ -108,8 +109,27 @@ class Actions
         return (object) [
             'success' => true,
             'statusCode' => 201,
-            'message' => 'File deleted',
-            'file' => $file
+            'message' => 'File deleted'
+        ];
+    }
+
+    public function deleteAttachment ($file_attachment) {
+        $fileAttachment = FileAttachment::find($file_attachment);
+
+        if (!$fileAttachment) {
+            return (object) [
+                'success' => false,
+                'statusCode' => 404,
+                'errorMessage' => 'File attachment not found'
+            ];
+        }
+
+        $fileAttachment->forceDelete();
+
+        return (object) [
+            'success' => true,
+            'statusCode' => 201,
+            'message' => 'File attachment deleted'
         ];
     }
 }
