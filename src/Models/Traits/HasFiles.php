@@ -12,7 +12,7 @@ trait HasFiles
         $fileAttachments = $this->hasMany(FileAttachment::class, 'model_id', 'id')
         ->where('model_name', $this->modelName) # singular noun, kebab-case
         ->with([
-            'files'
+            'file'
         ]);
 
         return $fileAttachments;
