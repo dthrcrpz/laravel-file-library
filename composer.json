@@ -1,5 +1,7 @@
 {
     "name": "dthrcrpz/laravel-file-library",
+    "description": "A simple package to upload files and attach them to your Models",
+    "keywords": ["library", "laravel", "files"],
     "type": "library",
     "license": "MIT",
     "authors": [
