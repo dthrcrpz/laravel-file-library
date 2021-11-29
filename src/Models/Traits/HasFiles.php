@@ -25,7 +25,7 @@ trait HasFiles
                 $this->attachFile($file_id);
             }
         } else {
-            throw new Exception("attachFiles function can only accept array");
+            throw new Exception("attachFiles() function can only accept array");
         }
     }
 
@@ -47,6 +47,9 @@ trait HasFiles
                     ]);
                 }
             }
+        } else {
+            $this->forceDelete();
+            throw new Exception("No \$modelName is defined on the model you're attaching to");
         }
     }
 
@@ -57,7 +60,7 @@ trait HasFiles
                 $this->detachFile($file_id);
             }
         } else {
-            throw new Exception("detachFiles function can only accept array");
+            throw new Exception("detachFiles() function can only accept array");
         }
     }
 
@@ -71,6 +74,8 @@ trait HasFiles
             if ($attachment) {
                 $attachment->delete();
             }
+        } else {
+            throw new Exception("No \$modelName is defined on the model you're detaching from");
         }
     }
 
@@ -83,6 +88,8 @@ trait HasFiles
             foreach ($fileAttachments as $key => $fileAttachment) {
                 $fileAttachment->delete();
             }
+        } else {
+            throw new Exception("No \$modelName is defined on the model you're detaching from");
         }
     }
 }
