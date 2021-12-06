@@ -19,6 +19,7 @@ class CreateFileAttachmentsTable extends Migration
             $table->foreignId('file_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('model_id');
             $table->string('model_name');
+            $table->string('category')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

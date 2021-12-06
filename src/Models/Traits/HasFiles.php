@@ -8,6 +8,13 @@ use Exception;
 
 trait HasFiles
 {
+    public $fileCategory = null;
+
+    public function setCategory ($fileCategory = null) {
+        $this->fileCategory = $fileCategory;
+        return $this;
+    }
+
     public function file_attachments () {
         $fileAttachments = $this->hasMany(FileAttachment::class, 'model_id', 'id')
         ->where('model_name', $this->modelName) # singular noun, kebab-case
@@ -27,6 +34,8 @@ trait HasFiles
         } else {
             throw new Exception("attachFiles() function can only accept array");
         }
+
+        return $this;
     }
 
     public function attachFile ($file_id) {
@@ -43,7 +52,8 @@ trait HasFiles
                     FileAttachment::create([
                         'model_id' => $this->id,
                         'model_name' => $this->modelName,
-                        'file_id' => $file_id
+                        'file_id' => $file_id,
+                        'category' => $this->fileCategory
                     ]);
                 }
             }
@@ -62,6 +72,8 @@ trait HasFiles
         } else {
             throw new Exception("detachFiles() function can only accept array");
         }
+
+        return $this;
     }
 
     public function detachFile ($file_id) {
@@ -77,6 +89,8 @@ trait HasFiles
         } else {
             throw new Exception("No \$modelName is defined on the model you're detaching from");
         }
+
+        return $this;
     }
 
     public function detachAllFiles () {
@@ -91,5 +105,7 @@ trait HasFiles
         } else {
             throw new Exception("No \$modelName is defined on the model you're detaching from");
         }
+
+        return $this;
     }
 }
