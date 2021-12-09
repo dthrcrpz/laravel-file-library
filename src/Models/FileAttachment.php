@@ -2,12 +2,13 @@
 
 namespace Dthrcrpz\FileLibrary\Models;
 
+use Dthrcrpz\FileLibrary\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FileAttachment extends Pivot
 {
-    use SoftDeletes;
+    use SoftDeletes, Uuid;
 
     protected $table = 'file_attachments';
 

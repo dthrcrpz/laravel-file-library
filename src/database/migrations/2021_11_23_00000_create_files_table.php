@@ -14,7 +14,11 @@ class CreateFilesTable extends Migration
     public function up()
     {
         Schema::create('files', function (Blueprint $table) {
-            $table->id();
+            if (config('filelibrary.use_uuid')) {
+                $table->uuid('id')->primary();
+            } else {
+                $table->id();
+            }
 
             $table->string('path');
             $table->string('path_resized')->nullable();

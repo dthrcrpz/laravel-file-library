@@ -31,5 +31,14 @@ return [
     | DELETE: 'files/{file}'
     | DELETE: file-attachments/{file_attachment}
     */
-    'enable_routes' => true
+    'enable_routes' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Use UUID
+    |--------------------------------------------------------------------------
+    | Set to true if you're using UUID as your primary key's data type instead of the default id
+    | Default is false
+    */
+    'use_uuid' => false
 ];

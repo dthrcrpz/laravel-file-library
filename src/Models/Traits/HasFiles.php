@@ -17,7 +17,7 @@ trait HasFiles
 
     public function file_attachments () {
         $fileAttachments = $this->hasMany(FileAttachment::class, 'model_id', 'id')
-        ->where('model_name', $this->modelName) # singular noun, kebab-case
+        ->where('model_name', class_basename($this)) # singular noun, kebab-case
         ->with([
             'file'
         ]);
@@ -39,28 +39,24 @@ trait HasFiles
     }
 
     public function attachFile ($file_id) {
-        if ($this->modelName) {
-            $attachmentExists = FileAttachment::where('model_name', $this->modelName)
-            ->where('model_id', $this->id)
-            ->where('file_id', $file_id)
-            ->exists();
+        $attachmentExists = FileAttachment::where('model_name', class_basename($this))
+        ->where('model_id', $this->id)
+        ->where('file_id', $file_id)
+        ->exists();
 
-            if (!$attachmentExists) {
-                $file = File::find($file_id);
-        
-                if ($file) {
-                    FileAttachment::create([
-                        'model_id' => $this->id,
-                        'model_name' => $this->modelName,
-                        'file_id' => $file_id,
-                        'category' => $this->fileCategory
-                    ]);
-                }
+        if (!$attachmentExists) {
+            $file = File::find($file_id);
+    
+            if ($file) {
+                FileAttachment::create([
+                    'model_id' => $this->id,
+                    'model_name' => class_basename($this),
+                    'file_id' => $file_id,
+                    'category' => $this->fileCategory
+                ]);
             }
-        } else {
-            $this->forceDelete();
-            throw new Exception("No \$modelName is defined on the model you're attaching to");
         }
+      
     }
 
     public function detachFiles ($file_ids) {
@@ -77,33 +73,25 @@ trait HasFiles
     }
 
     public function detachFile ($file_id) {
-        if ($this->modelName) {
-            $attachment = FileAttachment::where('model_name', $this->modelName)
-            ->where('model_id', $this->id)
-            ->where('file_id', $file_id)
-            ->first();
+        $attachment = FileAttachment::where('model_name', class_basename($this))
+        ->where('model_id', $this->id)
+        ->where('file_id', $file_id)
+        ->first();
 
-            if ($attachment) {
-                $attachment->delete();
-            }
-        } else {
-            throw new Exception("No \$modelName is defined on the model you're detaching from");
+        if ($attachment) {
+            $attachment->delete();
         }
 
         return $this;
     }
 
     public function detachAllFiles () {
-        if ($this->modelName) {
-        $fileAttachments = FileAttachment::where('model_name', $this->modelName)
-            ->where('model_id', $this->id)
-            ->get();
+        $fileAttachments = FileAttachment::where('model_name', class_basename($this))
+        ->where('model_id', $this->id)
+        ->get();
 
-            foreach ($fileAttachments as $key => $fileAttachment) {
-                $fileAttachment->delete();
-            }
-        } else {
-            throw new Exception("No \$modelName is defined on the model you're detaching from");
+        foreach ($fileAttachments as $key => $fileAttachment) {
+            $fileAttachment->delete();
         }
 
         return $this;
