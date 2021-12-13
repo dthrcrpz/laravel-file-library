@@ -40,5 +40,14 @@ return [
     | Set to true if you're using UUID as your primary key's data type instead of the default id
     | Default is false
     */
-    'use_uuid' => false
+    'use_uuid' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Resize Dimensions
+    |--------------------------------------------------------------------------
+    | Dimension of image when being resized by Image Intervention
+    | Default is [700, 700]
+    */
+    'resize_dimensions' => [700, 700]
 ];

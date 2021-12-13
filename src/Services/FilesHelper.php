@@ -55,7 +55,8 @@ class FilesHelper
         Storage::disk($disk)->put($uploadPath, $unresizedFile->getEncoded(), 'public');
     
         # upload resized file
-        $resizedFile = Image::make($file->getRealPath())->resize(750, 750, function ($c) {
+        $resizeParameters = config('filelibrary.resize_dimensions');
+        $resizedFile = Image::make($file->getRealPath())->resize($resizeParameters[0], $resizeParameters[1], function ($c) {
             $c->aspectRatio();
             $c->upsize();
         })->interlace()->encode($extension, 80)
