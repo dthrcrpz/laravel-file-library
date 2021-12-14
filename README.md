@@ -308,10 +308,10 @@ return [
     | Set to false if you want to use custom routes with custom middlewares, etc.
     |
     | The default routes are:
-    | POST: 'files'
-    | PATCH: 'files/{file_model}'
-    | DELETE: 'files/{file}'
-    | DELETE: file-attachments/{file_attachment}
+    | POST: 'api/files'
+    | PATCH: 'api/files/{file_model}'
+    | DELETE: 'api/files/{file}'
+    | DELETE: 'api/file-attachments/{file_attachment}'
     */
     'enable_routes' => true,
 
