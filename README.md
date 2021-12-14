@@ -180,7 +180,7 @@ This will also delete the `file_attachments` related to it
 ```
 
 ## Attaching files to Model
-Make sure to use the `HasFiles` trait on your model and define its `$modelName` (kebab-case, singular noun)
+Make sure to use the `HasFiles` trait on your model.
 ```php
 <?php
 
@@ -193,8 +193,6 @@ use Illuminate\Database\Eloquent\Model;
 class YourModel extends Model
 {
     use SoftDeletes, HasFiles;
-
-    public $modelName = 'your-model';
 }
 ```
 
@@ -207,6 +205,9 @@ After setting it up, your model can now call the `attachFile()` method. It accep
 
     # attaching a single file
     $yourModel->attachFile(69); # where 69 is the file ID
+    
+    # attaching a single file WITH category. This can be used if a model has different types of file attachments such as "banner-image", "background-image", etc.
+    $yourModel->setCategory('background-image')->attachFile(69);
 ```
 
 ***Attaching multiple files***
@@ -216,14 +217,27 @@ After setting it up, your model can now call the `attachFile()` method. It accep
     # assuming you got an array of file IDs
     $fileIdArray = [420, 69, 666];
     $yourModel->attachFiles($fileIdArray);
+    
+    # attaching a single file WITH category. This can be used if a model has different types of file attachments such as "banner-image", "background-image", etc.
+    $yourModel->setCategory('background-image')->attachFiles($$fileIdArray);
 ```
 
 ### Calling the file_attachments relationship
-You can use Eloquent's `with` method.
+You can use Eloquent's `with` method. Feel free to build a query according to your needs.
 ```php
+    # sample code to include all file_attachments
     $yourModel = YourModel::where('id', 69)
     ->with([
         'file_attachments'
+    ])
+    ->first();
+    
+    # sample code to include specific category of file_attachments only
+    $yourModel = YourModel::where('id', 69)
+    ->with([
+        'file_attachments' => function ($q) {
+            $q->where('category', 'background-image');
+        }
     ])
     ->first();
 ```
@@ -258,7 +272,13 @@ You're editing a Blog with multiple attached files. You're displaying the files 
 **ROUTE:** `/api/file-attachments/69`
 
 ## Config
-Create a `filelibrary.php` file under your `config` folder and paste the following:
+
+Publish the package's config
+```sh
+php artisan vendor:publish --tag=filelibrary-config
+```
+
+A `filelibrary.php` file under your `config` folder will be generated.
 ```php
 <?php
 
@@ -293,12 +313,30 @@ return [
     | DELETE: 'files/{file}'
     | DELETE: file-attachments/{file_attachment}
     */
-    'enable_routes' => true
+    'enable_routes' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Use UUID
+    |--------------------------------------------------------------------------
+    | Set to true if you're using UUID as your primary key's data type instead of the default id
+    | Default is false
+    */
+    'use_uuid' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Resize Dimensions
+    |--------------------------------------------------------------------------
+    | Dimension of image when being resized by Image Intervention
+    | Default is [300, 300]
+    */
+    'resize_dimensions' => [300, 300]
 ];
 ```
 
 ## Development
-Want to contribute? Great! Feel free to submit a pull request.
+Wanna contribute? Great! Feel free to submit a pull request.
 
 ## License
 MIT

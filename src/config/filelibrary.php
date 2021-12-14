@@ -47,7 +47,7 @@ return [
     | Resize Dimensions
     |--------------------------------------------------------------------------
     | Dimension of image when being resized by Image Intervention
-    | Default is [700, 700]
+    | Default is [300, 300]
     */
-    'resize_dimensions' => [700, 700]
+    'resize_dimensions' => [300, 300]
 ];
