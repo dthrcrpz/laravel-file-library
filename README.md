@@ -1,4 +1,4 @@
-> A simple package to upload files and attach them to your Models
+> A simple Laravel package to upload files and attach them to your Models
 
 This package was developed mainly for personal usage but I decided to publish it so I can just install it through composer for my projects. Feel free to use it for your projects and contribute on the package. 
 
