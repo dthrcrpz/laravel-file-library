@@ -44,6 +44,8 @@ Navigate to `config/app.php` and add the following to the `providers` and `alias
 
 # Usage Through Facades
 
+This should be the preferred usage so you can create your own routes and use your middlewares.
+
 ## Upload File
 ```php
 FileLib::uploadFile($request);
@@ -313,7 +315,7 @@ return [
     | Storage
     |--------------------------------------------------------------------------
     | The filesystem where you want the files to be uploaded
-    | Supported: "public", "s3"
+    | Currently supported are: "public", "s3"
     */
     'storage' => 'public',
     
