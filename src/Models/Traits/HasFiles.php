@@ -10,12 +10,14 @@ trait HasFiles
 {
     public $fileCategory = null;
 
-    public function setCategory ($fileCategory = null) {
+    public function setCategory($fileCategory = null)
+    {
         $this->fileCategory = $fileCategory;
         return $this;
     }
 
-    public function file_attachments () {
+    public function file_attachments()
+    {
         $fileAttachments = $this->hasMany(FileAttachment::class, 'model_id', 'id')
         ->where('model_name', class_basename($this)) # singular noun, kebab-case
         ->with([
@@ -25,7 +27,8 @@ trait HasFiles
         return $fileAttachments;
     }
 
-    public function attachFiles ($file_ids) {
+    public function attachFiles($file_ids)
+    {
         $acceptedDataTypes = ['array', 'object'];
         if (in_array(gettype($file_ids), $acceptedDataTypes)) {
             foreach ($file_ids as $key => $file_id) {
@@ -38,7 +41,8 @@ trait HasFiles
         return $this;
     }
 
-    public function attachFile ($file_id) {
+    public function attachFile($file_id)
+    {
         $attachmentExists = FileAttachment::where('model_name', class_basename($this))
         ->where('model_id', $this->id)
         ->where('file_id', $file_id)
@@ -59,7 +63,8 @@ trait HasFiles
       
     }
 
-    public function detachFiles ($file_ids) {
+    public function detachFiles($file_ids)
+    {
         $acceptedDataTypes = ['array', 'object'];
         if (in_array(gettype($file_ids), $acceptedDataTypes)) {
             foreach ($file_ids as $key => $file_id) {
@@ -72,7 +77,8 @@ trait HasFiles
         return $this;
     }
 
-    public function detachFile ($file_id) {
+    public function detachFile($file_id)
+    {
         $attachment = FileAttachment::where('model_name', class_basename($this))
         ->where('model_id', $this->id)
         ->where('file_id', $file_id)
@@ -85,7 +91,8 @@ trait HasFiles
         return $this;
     }
 
-    public function detachAllFiles () {
+    public function detachAllFiles()
+    {
         $fileAttachments = FileAttachment::where('model_name', class_basename($this))
         ->where('model_id', $this->id)
         ->get();

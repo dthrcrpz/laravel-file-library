@@ -7,7 +7,8 @@ use Dthrcrpz\FileLibrary\FileLib\Facades\FileLib;
 
 class FileAttachmentController extends Controller
 {
-    public function destroy ($file_attachment) {
+    public function destroy($file_attachment)
+    {
         $fileAttachmentDelete = FileLib::deleteAttachment($file_attachment);
 
         if (!$fileAttachmentDelete->success) {

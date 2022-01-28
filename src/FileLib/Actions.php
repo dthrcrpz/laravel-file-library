@@ -9,7 +9,8 @@ use Dthrcrpz\FileLibrary\Models\FileAttachment;
 
 class Actions
 {
-    public function uploadFile ($r) {
+    public function uploadFile($r)
+    {
         $validator = Validator::make($r->all(), [
             'file' => 'required',
             'type' => 'required',
@@ -47,7 +48,8 @@ class Actions
         ];
     }
 
-    public function updateFile ($fileModel, $r) {
+    public function updateFile($fileModel, $r)
+    {
         $file = File::find($fileModel);
 
         if (!$file) {
@@ -99,7 +101,8 @@ class Actions
         ];
     }
     
-    public function deleteFile ($file) {
+    public function deleteFile($file)
+    {
         $file = File::find($file);
 
         if (!$file) {
@@ -123,7 +126,8 @@ class Actions
         ];
     }
 
-    public function deleteAttachment ($file_attachment) {
+    public function deleteAttachment($file_attachment)
+    {
         $fileAttachment = FileAttachment::find($file_attachment);
 
         if (!$fileAttachment) {

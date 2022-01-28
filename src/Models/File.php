@@ -15,19 +15,23 @@ class File extends Model
 
     protected static $cascades = ['file_attachments'];
 
-    public function getFilenameAttribute () {
+    public function getFilenameAttribute()
+    {
         return $this->attributes['path'];
     }
 
-    public function getPathAttribute ($value) {
+    public function getPathAttribute($value)
+    {
         return $this->formatPath($value);
     }
 
-    public function getPathResizedAttribute ($value) {
+    public function getPathResizedAttribute($value)
+    {
         return $this->formatPath($value);
     }
 
-    private function formatPath ($value) {
+    private function formatPath($value)
+    {
         switch (config('filelibrary.storage')) {
             case 'public':
                 return url('/') . '/storage/' . $value;
@@ -38,7 +42,8 @@ class File extends Model
         }
     }
 
-    public function file_attachments () {
+    public function file_attachments()
+    {
         return $this->hasMany(FileAttachment::class);
     }
 }

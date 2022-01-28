@@ -7,11 +7,13 @@ use Illuminate\Support\ServiceProvider;
 
 class FileLibServiceProvider extends ServiceProvider
 {
-    public function boot () {
+    public function boot()
+    {
         //
     }
 
-    public function register () {
+    public function register()
+    {
         App::bind('filelib', function () {
             return new \Dthrcrpz\FileLibrary\FileLib\Actions;
         });

@@ -4,7 +4,8 @@ namespace Dthrcrpz\FileLibrary\Models\Traits;
 
 trait CascadeRelationships
 {
-    protected static function bootCascadeRelationships () {
+    protected static function bootCascadeRelationships()
+    {
         static::deleting(function ($resource) {
             foreach (self::$cascades as $key => $relation) {
                 foreach ($resource->{$relation}()->get() as $key => $item) {

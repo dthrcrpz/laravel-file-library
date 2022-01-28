@@ -15,7 +15,8 @@ class FileAttachment extends Pivot
     protected $guarded = ['created_at'];
     protected $hidden = ['file_id', 'model_id', 'model_name', 'created_at', 'updated_at', 'deleted_at'];
 
-    public function file () {
+    public function file()
+    {
         return $this->belongsTo(File::class, 'file_id', 'id');
     }
 }

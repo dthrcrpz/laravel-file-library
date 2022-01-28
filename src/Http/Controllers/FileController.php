@@ -8,7 +8,8 @@ use Dthrcrpz\FileLibrary\FileLib\Facades\FileLib;
 
 class FileController extends Controller
 {
-    public function store (Request $r) {
+    public function store(Request $r)
+    {
         $uploadedFile = FileLib::uploadFile($r);
 
         if (!$uploadedFile->success) {
@@ -22,7 +23,8 @@ class FileController extends Controller
         ]);
     }
 
-    public function update ($file_model, Request $r) {
+    public function update($file_model, Request $r)
+    {
         $updatedFile = FileLib::updateFile($file_model, $r);
 
         if (!$updatedFile->success) {
@@ -36,7 +38,8 @@ class FileController extends Controller
         ]);
     }
 
-    public function destroy ($file) {
+    public function destroy($file)
+    {
         $fileDelete = FileLib::deleteFile($file);
 
         if (!$fileDelete->success) {

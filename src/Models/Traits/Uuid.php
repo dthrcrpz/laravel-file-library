@@ -5,7 +5,8 @@ use Illuminate\Support\Str;
 
 trait Uuid
 {
-    protected static function bootUuid () {
+    protected static function bootUuid()
+    {
         if (config('filelibrary.use_uuid')) {
             static::creating(function ($model) {
                 if (!$model->getKey()) {
@@ -15,13 +16,15 @@ trait Uuid
         }
     }
 
-    public function getKeyType () {
+    public function getKeyType()
+    {
         if (config('filelibrary.use_uuid')) {
             return 'string';
         }
     }
 
-    public function getIncrementing () {
+    public function getIncrementing()
+    {
         if (config('filelibrary.use_uuid')) {
             return false;
         }

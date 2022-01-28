@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 class FileServiceProvider extends ServiceProvider
 {
-    public function boot ()
+    public function boot()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/filelibrary.php', 'filelibrary');
 

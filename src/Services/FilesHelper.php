@@ -8,7 +8,8 @@ use Carbon\Carbon;
 
 class FilesHelper
 {
-    public function uploadFile ($file, $oldFilePath = null, $oldFilePathResized = null) {
+    public function uploadFile($file, $oldFilePath = null, $oldFilePathResized = null)
+    {
         $disk = config('filelibrary.storage');
     
         # get the file size
@@ -77,7 +78,8 @@ class FilesHelper
         return $toReturn;
     }
 
-    private function getExtensions () {
+    private function getExtensions()
+    {
         $extensions = ['svg', 'gif', 'pdf', 'ppt', 'pptx', 'xls', 'xlsx', 'docx', 'doc', 'txt'];
 
         $extensionsArray = [];
@@ -90,7 +92,8 @@ class FilesHelper
         return $extensionsArray;
     }
     
-    private function getContentType ($extension) {
+    private function getContentType($extension)
+    {
         $result = null;
         switch ($extension) {
             case 'svg':
