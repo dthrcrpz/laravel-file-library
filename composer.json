@@ -13,7 +13,7 @@
     "require": {
         "php": "^7.4|^8.0",
         "illuminate/contracts": "^10.0",
-        "intervention/image": "^3.0",
+        "intervention/image": "^2.0",
         "laravel/helpers": "^1.0"
     },
     "autoload": {
